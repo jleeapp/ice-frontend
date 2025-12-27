@@ -31,9 +31,16 @@ ice-frontend/
 1. 将构建产物复制到仓库根目录的 `dist/` 下（示例结构见 `dist-example/README.md`）。
 2. 使用启动脚本（推荐）或手动运行 Compose 启动服务。
 
-#### 使用启动脚本（推荐）
+#### Windows 开发环境（端口 3080）
 
-启动脚本会自动检查 `dist/` 目录是否存在：
+```powershell
+docker compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d
+# 访问 http://localhost:3080
+```
+
+#### Linux 服务器部署（Ubuntu Server 22）
+
+使用启动脚本（推荐），会自动检查 `dist/` 目录是否存在：
 
 ```bash
 # 生产环境（端口 80）
@@ -41,31 +48,16 @@ ice-frontend/
 
 # 测试/云环境（端口 8080）
 ./start.sh cloud
-
-# 开发环境（端口 3080）
-./start.sh dev
 ```
 
-#### 手动启动
+或手动启动：
 
-本地开发环境（端口 3080）：
 ```bash
-docker compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d
-# 访问 http://localhost:3080
-```
-
-测试/云环境（端口 8080）：
-```bash
+# 测试/云环境
 docker compose -f docker-compose.base.yml -f docker-compose.cloud.yml up -d
-# 访问 http://<服务器IP>:8080
-```
 
-生产环境（端口 80）：
-```bash
-# 1. 创建数据目录
+# 生产环境
 sudo mkdir -p /data/ice-frontend/logs
-
-# 2. 启动服务
 docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
 ```
 

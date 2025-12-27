@@ -31,15 +31,10 @@ fi
 
 echo "✓ dist/ 目录检查通过"
 
-# 确定环境
+# 确定环境（仅支持 Ubuntu Server 22）
 ENV="${1:-prod}"
 
 case "$ENV" in
-    dev)
-        echo "启动开发环境 (端口 3080)..."
-        docker compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d
-        echo "访问: http://localhost:3080"
-        ;;
     cloud|test)
         echo "启动测试/云环境 (端口 8080)..."
         docker compose -f docker-compose.base.yml -f docker-compose.cloud.yml up -d
@@ -51,8 +46,7 @@ case "$ENV" in
         echo "访问: http://<服务器IP>"
         ;;
     *)
-        echo "用法: $0 [dev|cloud|prod]"
-        echo "  dev   - 开发环境 (端口 3080)"
+        echo "用法: $0 [cloud|prod]"
         echo "  cloud - 测试/云环境 (端口 8080)"
         echo "  prod  - 生产环境 (端口 80)"
         exit 1
