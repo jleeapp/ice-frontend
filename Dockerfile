@@ -3,7 +3,7 @@
 # 直接使用 nginx 提供静态文件服务
 # ============================================================
 
-FROM nginx:alpine
+FROM nginx:latest
 
 # 复制 nginx 配置
 COPY nginx/nginx.conf /etc/nginx/nginx.conf

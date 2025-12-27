@@ -5,7 +5,7 @@
 
 services:
   frontend:
-    image: nginx:alpine
+    image: nginx:latest
     container_name: ice_frontend
     restart: unless-stopped
     volumes:

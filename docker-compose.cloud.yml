@@ -5,7 +5,7 @@
 
 services:
   frontend:
-    image: nginx:alpine
+    image: nginx:latest
     ports:
       - "8080:80"
     volumes:
