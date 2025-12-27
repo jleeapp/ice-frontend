@@ -1,0 +1,20 @@
+# ============================================================
+# ice-frontend 百度云测试环境
+# 使用: docker compose -f docker-compose.base.yml -f docker-compose.cloud.yml up -d
+# ============================================================
+
+services:
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+# 加入 ice-backend 网络（如果后端在同一台机器）
+networks:
+  ice-network:
+    name: ice-backend_ice-network
+    external: true
