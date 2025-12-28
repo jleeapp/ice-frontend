@@ -1,19 +1,15 @@
 # ============================================================
-# ice-frontend 单阶段镜像（使用预构建的 dist 内容）
-# 直接使用 nginx 提供静态文件服务
+# ice-frontend 镜像
 # ============================================================
 
 FROM nginx:latest
 
 # 复制 nginx 配置
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# 复制本地已构建好的静态资源（如存在）
-COPY dist/ /usr/share/nginx/html
+# 复制静态资源
+COPY dist/ /var/www/html
 
-# 暴露端口
 EXPOSE 80
 
-# 启动 nginx
 CMD ["nginx", "-g", "daemon off;"]

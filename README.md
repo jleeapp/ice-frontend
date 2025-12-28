@@ -2,64 +2,56 @@
 
 ## 项目概述
 
+
 覆冰监测系统前端部署仓库，通过 Docker + nginx 提供静态文件服务。
 
-> **重要**：本仓库不进行在线构建。请将已构建完成的静态前端文件放入 `dist/` 目录，Docker 直接使用 nginx 指向该目录提供服务。  
+> **重要**：本仓库不进行在线构建。请将已构建完成的静态前端文件放入 `dist/` 目录，Docker 镜像会自动复制到 nginx 的 `/var/www/html` 目录下进行服务。  
 > `dist-example/` 包含示例说明，可参考其结构。
 
 ## 项目结构
 
+
 ```
 ice-frontend/
-├── start.sh                  # 启动脚本（检查 dist 后启动服务）
-├── docker-compose.base.yml   # 基础服务配置
-├── docker-compose.dev.yml    # 开发环境配置（端口 3080）
-├── docker-compose.cloud.yml  # 测试/云环境（端口 8080）
-├── docker-compose.prod.yml   # 生产环境配置（端口 80）
-├── Dockerfile                # 单阶段 nginx 镜像（可选构建）
-├── dist/                     # 预构建的静态文件（需自行添加）
-├── dist-example/             # 示例目录结构说明
-└── nginx/
-    ├── nginx.conf            # nginx 主配置
-    └── default.conf          # 站点配置
+├── start.sh           # 启动脚本（检查 dist 后启动服务）
+├── docker-compose.yml # 统一 Compose 配置
+├── Dockerfile         # nginx 镜像构建文件
+├── nginx.conf         # nginx 主配置（已合并）
+├── dist/              # 预构建的静态文件（需自行添加）
+├── dist-example/      # 示例目录结构说明
+└── README.md
 ```
 
 ## 快速开始
 
 ### Docker 部署
 
+
 1. 将构建产物复制到仓库根目录的 `dist/` 下（示例结构见 `dist-example/README.md`）。
 2. 使用启动脚本（推荐）或手动运行 Compose 启动服务。
 
-#### Windows 开发环境（端口 3080）
-
-```powershell
-docker compose -f docker-compose.base.yml -f docker-compose.dev.yml up -d
-# 访问 http://localhost:3080
-```
-
-#### Linux 服务器部署（Ubuntu Server 22）
-
-使用启动脚本（推荐），会自动检查 `dist/` 目录是否存在：
+#### 通用启动方式
 
 ```bash
 # 生产环境（端口 80）
-./start.sh prod
-
-# 测试/云环境（端口 8080）
-./start.sh cloud
+HOST_PORT=80 docker compose up -d
+# 开发环境（端口 3080）
+docker compose up -d
+# 云测试环境（端口 8080）
+HOST_PORT=8080 docker compose up -d
 ```
 
-或手动启动：
+> 默认会将 dist/ 目录内容挂载到 nginx 的 `/var/www/html`，无需手动创建 www/html 目录。
+
+#### 更新前端文件
+
+更改 dist 目录文件后，需重启容器生效：
 
 ```bash
-# 测试/云环境
-docker compose -f docker-compose.base.yml -f docker-compose.cloud.yml up -d
-
-# 生产环境
-sudo mkdir -p /data/ice-frontend/logs
-docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
+docker compose restart
 ```
+
+或清除浏览器缓存（Ctrl+Shift+R / Cmd+Shift+R）。
 
 ## 环境变量
 
@@ -79,18 +71,11 @@ docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
 | 线路覆冰 | /line      | 导线精灵、模拟导线数据     |
 | 视频监控 | /video     | 实时视频、抓拍、回放       |
 
-## 与后端联调
 
-前端通过 nginx 反向代理将 `/api/*` 请求转发到后端服务：
+## 其它说明
 
-```nginx
-location /api/ {
-    proxy_pass http://ice-backend:3000/;
-}
-```
-
-确保前端容器与后端容器在同一 Docker 网络中。
+当前配置不再默认反向代理后端 API，如需联调请参考 nginx.conf 注释，自行添加代理规则。
 
 ---
 
-*更新日期: 2025-12-27*
+*更新日期: 2025-12-28*
