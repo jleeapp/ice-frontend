@@ -1,0 +1,24 @@
+# ============================================================
+# ice-frontend 镜像 - 测试环境
+#
+# 构建方式:
+#   docker build -f Dockerfile.test -t ice-frontend-test .
+#
+# 运行方式:
+#   docker run -d -p 8080:80 --name ice-frontend-test ice-frontend-test
+#
+# 说明:
+#   可在本地或云端服务器上运行，与生产环境镜像独立
+# ============================================================
+
+FROM nginx:latest
+
+# 复制 nginx 配置
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# 复制静态资源 (使用 dist-test 目录)
+COPY dist-test/ /var/www/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

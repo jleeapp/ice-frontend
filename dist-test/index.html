@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云端测试环境 - ICE Frontend</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .env-tag {
+            display: inline-block;
+            background: #4CAF50;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .info {
+            margin-top: 20px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧊 覆冰监测系统</h1>
+        <p>ICE Frontend</p>
+        <div class="env-tag">☁️ 云端测试环境</div>
+        <p class="info">此页面确认云端测试环境已正确部署</p>
+        <p class="info">部署时间: <span id="time"></span></p>
+    </div>
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+    </script>
+</body>
+
+</html>
